@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pretium_finance/features/authenitcation/login.dart';
-import 'package:pretium_finance/theme.dart';
 
 class OnboardingScreens extends StatefulWidget {
   static const routeName = 'onboarding';
-  const OnboardingScreens({Key? key}) : super(key: key);
+  const OnboardingScreens({super.key});
 
   @override
   State<OnboardingScreens> createState() => _OnboardingScreensState();
@@ -49,7 +48,7 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -92,7 +91,7 @@ class _OnboardingScreensState extends State<OnboardingScreens> {
                       Text(
                         page.title,
                         style: theme.textTheme.headlineSmall?.copyWith(
-                          color: theme.colorScheme.onBackground,
+                          color: theme.colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

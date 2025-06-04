@@ -4,7 +4,7 @@ import 'package:pretium_finance/features/authenitcation/login.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const routeName = "registration";
-  const RegistrationScreen({Key? key}) : super(key: key);
+  const RegistrationScreen({super.key});
 
   @override
   State<RegistrationScreen> createState() => _RegistrationScreenState();
@@ -18,10 +18,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: theme.colorScheme.background,
+        backgroundColor: theme.colorScheme.surface,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black.withOpacity(0.5)),
           onPressed: () => context.pop(),
@@ -39,14 +39,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   'Create Account for a test',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.onBackground,
+                    color: theme.colorScheme.onSurface,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Simplify your crypto payments with us',
                   style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.black.withOpacity(0.3),
+                    color: theme.colorScheme.onSurface.withOpacity(0.3),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
