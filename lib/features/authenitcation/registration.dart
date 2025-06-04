@@ -36,7 +36,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               children: [
                 const SizedBox(height: 8),
                 Text(
-                  'Create Account',
+                  'Create Account for a test',
                   style: theme.textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.onBackground,
