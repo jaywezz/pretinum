@@ -2,14 +2,13 @@ name: Build APK
 
 on:
   push:
-    branches-ignore:
-      - 'dependabot/**'
     branches:
       - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions: write-all
 
     steps:
       - uses: actions/checkout@v4
