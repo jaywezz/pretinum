@@ -64,10 +64,35 @@ This guide explains how to set up automated deployment of your Flutter app to th
 
 1. Go to your GitHub repository
 2. Navigate to Settings > Secrets and variables > Actions
-3. Add the following secrets:
-   - `ANDROID_KEYSTORE`: Content of keystoreBase64 file
-   - `ANDROID_KEY_PROPERTIES`: Content of keyPropertiesBase64 file
-   - `PLAY_STORE_CREDENTIALS`: Content of serviceAccountBase64 file
+3. Click on "New repository secret"
+4. Add each secret one by one:
+
+   a. For Android Keystore:
+   - Name: `ANDROID_KEYSTORE`
+   - Value: Copy and paste the entire content of your `keystoreBase64` file
+   - Click "Add secret"
+
+   b. For Key Properties:
+   - Name: `ANDROID_KEY_PROPERTIES`
+   - Value: Copy and paste the entire content of your `keyPropertiesBase64` file
+   - Click "Add secret"
+
+   c. For Service Account:
+   - Name: `PLAY_STORE_CREDENTIALS`
+   - Value: Copy and paste the entire content of your `serviceAccountBase64` file
+   - Click "Add secret"
+
+5. Verify your secrets:
+   - You should see all three secrets listed in the Actions secrets page
+   - The values will be hidden for security
+   - Make sure the names match exactly with what's in the workflow file
+
+Note: If you need to update a secret later:
+
+1. Click on the secret name
+2. Click "Update"
+3. Paste the new value
+4. Click "Save"
 
 ## Step 5: Update Your App's Package Name
 
@@ -76,6 +101,7 @@ In the workflow file (`.github/workflows/playstore_deploy.yml`), replace:
 ```yaml
 packageName: com.example.pretium_finance
 ```
+
 with your actual package name from `android/app/build.gradle`
 
 ## Step 6: Configure Release Track

@@ -3,7 +3,7 @@ name: Deploy to Play Store
 on:
   push:
     branches:
-      - release
+      - main
 
 jobs:
   deploy:
@@ -35,14 +35,20 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
 
-      - name: Decode Android keystore
-        run: echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > ${{ env.KEYSTORE_PATH }}
+      - name: Decode and Decrypt Android keystore
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > encrypted-keystore.enc
+          openssl enc -aes-256-cbc -d -salt -in encrypted-keystore.enc -out ${{ env.KEYSTORE_PATH }} -k ${{ secrets.KEYSTORE_ENCRYPTION_KEY }}
 
-      - name: Decode Android key properties
-        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" | base64 --decode > ${{ env.KEY_PROPS_PATH }}
+      - name: Decode and Decrypt Android key properties
+        run: |
+          echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" | base64 --decode > encrypted-keyprops.enc
+          openssl enc -aes-256-cbc -d -salt -in encrypted-keyprops.enc -out ${{ env.KEY_PROPS_PATH }} -k ${{ secrets.KEYPROPS_ENCRYPTION_KEY }}
 
-      - name: Decode Service Account
-        run: echo "${{ secrets.PLAY_STORE_CREDENTIALS }}" | base64 --decode > ${{ env.SERVICE_ACCOUNT_PATH }}
+      - name: Decode and Decrypt Service Account
+        run: |
+          echo "${{ secrets.PLAY_STORE_CREDENTIALS }}" | base64 --decode > encrypted-service-account.enc
+          openssl enc -aes-256-cbc -d -salt -in encrypted-service-account.enc -out ${{ env.SERVICE_ACCOUNT_PATH }} -k ${{ secrets.SERVICE_ACCOUNT_ENCRYPTION_KEY }}
 
       - name: Install dependencies
         run: flutter pub get
