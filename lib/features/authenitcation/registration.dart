@@ -44,7 +44,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Simplify your crypto payments with us today',
+                  'Simplify your crypto payments with',
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: theme.colorScheme.onSurface.withOpacity(0.3),
                     fontWeight: FontWeight.bold,
