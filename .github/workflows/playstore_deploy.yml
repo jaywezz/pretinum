@@ -1,0 +1,63 @@
+name: Deploy to Play Store
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  deploy:
+    name: Deploy to Play Store
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    env:
+      JAVA_VERSION: '11'
+      FLUTTER_VERSION: '3.22.2'
+      AAB_PATH: build/app/outputs/bundle/release/app-release.aab
+      KEYSTORE_PATH: android/upload-keystore.jks
+      KEY_PROPS_PATH: android/key.properties
+      SERVICE_ACCOUNT_PATH: store_credentials.json
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+
+      - name: Decode Android keystore
+        run: echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > ${{ env.KEYSTORE_PATH }}
+
+      - name: Decode Android key properties
+        run: echo "${{ secrets.ANDROID_KEY_PROPERTIES }}" | base64 --decode > ${{ env.KEY_PROPS_PATH }}
+
+      - name: Decode Service Account
+        run: echo "${{ secrets.PLAY_STORE_CREDENTIALS }}" | base64 --decode > ${{ env.SERVICE_ACCOUNT_PATH }}
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze project source
+        run: flutter analyze
+
+      - name: Build App Bundle
+        run: flutter build appbundle --release
+
+      - name: Upload AAB to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: ${{ env.SERVICE_ACCOUNT_PATH }}
+          packageName: com.example.pretium_finance
+          releaseFiles: ${{ env.AAB_PATH }}
+          track: internal
+          status: completed 
