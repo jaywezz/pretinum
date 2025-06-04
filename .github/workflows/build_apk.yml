@@ -1,7 +1,7 @@
 name: Build APK
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -33,26 +33,11 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
         
-      - name: Get version from pubspec.yaml
-        id: get_version
-        run: |
-          VERSION=$(grep 'version:' pubspec.yaml | head -n 1 | sed 's/version: //')
-          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-        
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+      - name: Push to Releases
+        uses: ncipollo/release-action@v1
         with:
-          name: Release v${{ steps.get_version.outputs.VERSION }}
-          tag_name: v${{ steps.get_version.outputs.VERSION }}
-          files: build/app/outputs/flutter-apk/app-release.apk
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk 
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
+          tag: v1.0.${{ github.run_number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Release v1.0.${{ github.run_number }}
+          body: "APK built from main branch" 
